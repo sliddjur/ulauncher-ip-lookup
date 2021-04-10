@@ -47,17 +47,17 @@ class IPLookupExtension(Extension):
             out_arr["Route"] = response["asn"]["route"]
             out_arr["ISP"] = "%s, %s, %s" % (response["asn"]["asn"], response["asn"]["name"], response["asn"]["type"])
             
+            location = [response["city"], response["country_name"]]
+            location = ", ".join(filter(None, location))
+            location = location + " (%s)" % response["country_code"] if response["country_code"] != None else ""
+            out_arr["Location"] = location
+
             threats = [k for k,v in response["threat"].items() if v]
             if len(threats) > 0:
                 out_arr["Threats"] = ", ".join(threats)
             else:
                 out_arr["Threats"] = "No Threats"
             
-            location = [response["city"], response["country_name"]]
-            location = ", ".join(filter(None, location))
-            location = location + " (%s)" % response["country_code"] if response["country_code"] != None else ""
-            out_arr["Location"] = location
-
             #out_arr["Coordiates"] = "%s, %s" % (response["latitude"], response["longitude"])
             #out_arr["Calling code"] = response["calling_code"]
             #out_arr["Languages"] = ", ".join(obj["name"] for obj in response["languages"])
